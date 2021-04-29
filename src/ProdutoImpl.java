@@ -24,11 +24,9 @@ public class ProdutoImpl extends java.rmi.server.UnicastRemoteObject implements 
 
     }
 
-    @Override
+    /*@Override
     public void registarF(Produto p) throws RemoteException {
 
-    }
-
-
+    }*/
 
 }

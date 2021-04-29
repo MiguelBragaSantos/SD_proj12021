@@ -5,7 +5,7 @@ import java.rmi.RemoteException;
 public interface ProdutoInterface extends java.rmi.Remote, Serializable {
 
 //métodos a ser usados no Impl
-    public void registarF(Produto p) throws java.rmi.RemoteException; //registar novo produto -> Fornecedor
+    //public void registarF(Produto p) throws java.rmi.RemoteException; //registar novo produto -> Fornecedor
     //adicionar stock -> Fornecedor
     //saída de stock -> Fornecedor
     //eliminar produto -> Fornecedor
