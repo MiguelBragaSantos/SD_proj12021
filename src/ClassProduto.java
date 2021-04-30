@@ -1,6 +1,6 @@
 import java.io.Serializable;
 
-public class Produto implements Serializable {
+public class ClassProduto implements Serializable {
 
         private int id; //categoria x id=1000; categoria y id=2000
         private String categoria;
@@ -19,7 +19,7 @@ public class Produto implements Serializable {
 
         //private static int ultimo =
 
-        public Produto(int id, int quantia_adicionar, String nome){
+        public ClassProduto(int id, int quantia_adicionar, String nome){
                 this.id=id;
                 this.nome=nome;
                 stock = ++quantia_adicionar; // ou criar parametro ultimo para guardar a quantia a adicionar e fazer stock =

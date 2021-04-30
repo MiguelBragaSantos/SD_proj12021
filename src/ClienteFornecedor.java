@@ -7,7 +7,7 @@ import java.rmi.RemoteException;
 * */
 
 
-public class ClienteFornecedor extends java.rmi.server.UnicastRemoteObject implements ProdutoInterface { //subcalss de Cliente
+public class ClienteFornecedor extends java.rmi.server.UnicastRemoteObject implements InterfaceFornecedor { //subcalss de Cliente
 
 
     protected ClienteFornecedor() throws RemoteException {

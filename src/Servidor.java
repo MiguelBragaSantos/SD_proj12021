@@ -15,7 +15,7 @@ public class Servidor {
         }
         try {
             //
-            ProdutoImpl implementaInterface = new ProdutoImpl("teste1");
+            ImplFornecedor implementaInterface = new ImplFornecedor("teste1");
 
             System.out.println("Servidor está OK");
         } catch (Exception e) {
