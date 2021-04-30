@@ -2,9 +2,20 @@ import java.io.Serializable;
 
 public class Produto implements Serializable {
 
-        private int id;
+        private int id; //categoria x id=1000; categoria y id=2000
+        private String categoria;
         private int stock; //quantidade em stock
+        private int min_stock; //stock minimo
         private String nome;
+        private float preco_compra;
+        private float preco_venda;
+
+        /*
+        *
+        *
+        *
+        * */
+
 
         //private static int ultimo =
 
@@ -16,7 +27,12 @@ public class Produto implements Serializable {
 
         //construtor só com nome? por causa do IMPL
 
+
+
         //getters e setters
+
+
+        //toString
 
 
 }

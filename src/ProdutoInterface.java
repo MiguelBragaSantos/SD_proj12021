@@ -3,7 +3,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface ProdutoInterface extends java.rmi.Remote, Serializable {
-
+// funçoes que queres usar no servidor, isto serve para o callback caso não faças podes tirar
 //métodos a ser usados no Impl
     //public void registarF(Produto p) throws java.rmi.RemoteException; //registar novo produto -> Fornecedor
     //adicionar stock -> Fornecedor
@@ -11,8 +11,6 @@ public interface ProdutoInterface extends java.rmi.Remote, Serializable {
     //eliminar produto -> Fornecedor
     //consultar saidas -> Fornecedor
 
-    //comprar produto -> Vendedor
-    //consultar produto existente -> Vendedor
-    //consultar compras feitas ao Fornecedor -> Vendedor
+
 
 }
