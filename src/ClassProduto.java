@@ -2,15 +2,16 @@ import java.io.Serializable;
 /*
 *        O QUE FALTA:
 * - definir função para o preço de venda
-*       tipo IRS, comissão, etc
+*       tipo IVA, comissão, etc
 *
 * - associar categoria a um range de 1000 números
 *       id mudar o primeiro valor consoante a categoria
 *               se for sofás: 1xxx
 *               se for camas: 2xxx
 *
-* - getters, setters e toString
+* - getters, setters
 * */
+
 
 public class ClassProduto implements Serializable {
 
@@ -49,7 +50,6 @@ public class ClassProduto implements Serializable {
 
                 //preços -> ver nas operações?
         }
-
 
         //getters e setters
         public int getUltimo() {

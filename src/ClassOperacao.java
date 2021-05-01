@@ -5,13 +5,18 @@ import java.util.GregorianCalendar;
 * ou se saída(venda)
  */
 
-//classe fechada!
+//classe fechada! ? - criar parametro de influencia de stock
+    /* Fornecedor/Vendedor-efetuam operação->
+            Venda ou compra-> -stock / +stock
+ */
 public class ClassOperacao implements Serializable {
 
     private GregorianCalendar data;
     private int nOperacao;
     private static int ultimo;
+
     private int codigo; //código do produto
+    //preços estão nas classes OpCompra e OpVenda
 
     public ClassOperacao(int codigo, int dia, int mes, int ano){
         ultimo++;

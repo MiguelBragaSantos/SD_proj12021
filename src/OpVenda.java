@@ -4,6 +4,7 @@ import java.io.Serializable;
 public class OpVenda extends ClassOperacao implements Serializable {
     private double preco;
 
+    //Vender produto numa respetiva
     public OpVenda(int codigo, int dia, int mes, int ano, double preco){
         super(codigo,dia,mes,ano);
         this.preco=preco;
