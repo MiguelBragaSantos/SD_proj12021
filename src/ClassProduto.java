@@ -21,7 +21,7 @@ public class ClassProduto implements Serializable {
         private String nome;
 
         private int stock; //quantidade em stock
-        //private int min_stock; //stock minimo -> fica 42 para todos, para já
+        private int min_stock; //stock minimo -> fica 42 para todos, para já
         //private static int add_stock; //quantidade a adicionar - no need fot this
 
         private float preco_compra; //preço da compra ao fornecedor pelo vendedor
@@ -34,19 +34,20 @@ public class ClassProduto implements Serializable {
                 nome="";
 
                 stock=0;
-                //min_stock=42; // 42 é o standart para todos os produtos
+                min_stock=42; // 42 é o standart para todos os produtos
 
                 preco_compra=0;
                 preco_venda=0;
         }
 
-        public ClassProduto(String nome, String categoria, int add_stock){
+        public ClassProduto(String nome, String categoria, int add_stock, int min_stock){
                 ultimo++;
                 id=ultimo;
                 this.nome=nome;
                 this.categoria=categoria;
 
                 stock = ++add_stock;
+                this.min_stock=min_stock;
 
                 //preços -> ver nas operações?
         }
@@ -59,7 +60,8 @@ public class ClassProduto implements Serializable {
                 this.ultimo = ultimo;
         }
 
-        //........
+
+        ///FALTA
 
 
         //toString
