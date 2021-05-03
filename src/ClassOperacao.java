@@ -12,26 +12,23 @@ import java.util.GregorianCalendar;
 public class ClassOperacao implements Serializable {
 
     private GregorianCalendar data;
-    private int nOperacao;
+    private int nOperacao;          //nr do recido
     private static int ultimo;
 
-
+    //private ClassProduto produto;
     private int codigo; //código do produto
-    //preços estão nas classes OpCompra e OpVenda
 
-    public ClassOperacao(int codigo, int dia, int mes, int ano){
+    //preços estão nas classes OpCompra e OpVenda
+    //private int opStock; //stock a ser adicionado ou removido
+
+
+    public ClassOperacao(ClassProduto produto, int dia, int mes, int ano){
         ultimo++;
         nOperacao=ultimo;
-        this.codigo=codigo;
+        codigo=produto.getId();
         data=new GregorianCalendar(ano, mes, dia);
     }
 
-    public ClassOperacao(int codigo){
-        ultimo++;
-        nOperacao=ultimo;
-        this.codigo=codigo;
-        GregorianCalendar data= new GregorianCalendar();
-    }
 
     public GregorianCalendar getData() {
         return data;
@@ -58,9 +55,10 @@ public class ClassOperacao implements Serializable {
         return codigo;
     }
 
+
     public String toString(){
         String s = "DIA OPERACAO: "+ (data.getTime().getDate()) + "/" + (data.getTime().getMonth()+1) + "/" + (data.getTime().getYear()+1900) + " " ;
-        s=s+ "\nN.OPERACAO "+ nOperacao + "\nOPERAÇÃO RELATIVA AO PRODUTO COM O CODIGO " + codigo;
+        s=s+ "\nN.OPERACAO "+ nOperacao + "\nOPERAÇÃO RELATIVA AO PRODUTO COM O CODIGO " + codigo + "\nQUANTIDADE COMPRADA/VENDIDA";
         return s;
     }
 }

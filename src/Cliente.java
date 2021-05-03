@@ -8,6 +8,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.util.GregorianCalendar;
 
 public class Cliente implements InterfaceCliente, Serializable {
 
@@ -43,8 +44,8 @@ public class Cliente implements InterfaceCliente, Serializable {
                 do {
                     System.out.println("----Mobiliário----");
                     System.out.println("F1- Registar um produto -->");
-                    System.out.println("F2- Adicionar uma certa quantidade -->");
-                    System.out.println("V3- Dar saída/venda de um produto -->");
+                    System.out.println("F2- Efetuar compra | Adicionar uma certa quantidade -->");
+                    System.out.println("V3- Vender | Dar saída/venda de um produto -->");
                     System.out.println("F4- Eliminar um produto-->");
                     System.out.println("V5- Consultar produtos existentes-->");
                     System.out.println("F6- Consultar as vendas (listar todas/ consultar por ordem de valor/produto mais vendido ...-->");
@@ -105,18 +106,45 @@ public class Cliente implements InterfaceCliente, Serializable {
                         System.out.println("Quantidade a comprar:");
                         int stock2 =Read.mipInt();
 
-                        look.ComprarProduto(nome2, stock2);
+                        System.out.println("Insira a data de compra");
+                        System.out.println("Dia");
+                        int dia = Read.mipInt();
+                        System.out.println("Mes");
+                        int mes = Read.mipInt();
+                        System.out.println("Ano");
+                        int ano = Read.mipInt();
+                        GregorianCalendar DC = new GregorianCalendar(ano, (mes - 1), dia); //ou passar só DC -> mudar nas classes
+                        look.ComprarProduto(nome2, dia, mes, ano,stock2);
 
                         break;
 //--------------
 
                     case 3: //Dar saída de um produto (se um produto é vendido ou atinge o seu prazo de validade é retirada a quantidade correspondente do stock);
+                        System.out.println("Nome da mobília a vender:");
+                        String nome3=ob.readLine();
+                        System.out.println("Quantidade a venda:");
+                        int stock3 =Read.mipInt();
 
+                        System.out.println("Insira a data de venda");
+                        System.out.println("Dia");
+                        int dia3 = Read.mipInt();
+                        System.out.println("Mes");
+                        int mes3 = Read.mipInt();
+                        System.out.println("Ano");
+                        int ano3 = Read.mipInt();
+                        GregorianCalendar DV = new GregorianCalendar(ano3, (mes3 - 1), dia3); //ou passar só DC -> mudar nas classes
+                        look.VenderProduto(nome3, dia3, mes3, ano3,stock3);
 
                         break;
 //--------------
 
                     case 4: //Eliminar um produto (caso deixe de existir no negócio);
+                        System.out.println("Nome da mobília a eliminar:");
+                        String nome4=ob.readLine();
+                        System.out.println("ID da mobília a eliminar:");
+                        int id4 =Read.mipInt();
+
+                        look.EliminarProduto(nome4, id4);
                         break;
 //--------------
 

@@ -23,7 +23,6 @@ public class ClassProduto implements Serializable {
 
         private int stock; //quantidade em stock
         private int min_stock; //stock minimo -> fica 42 para todos, para já
-        //private static int add_stock; //quantidade a adicionar - no need fot this
 
         private float preco_compra; //preço da compra ao fornecedor pelo vendedor
         private float preco_venda; //preço
@@ -116,6 +115,13 @@ public class ClassProduto implements Serializable {
                 this.preco_compra = preco_compra;
         }
 
+        public float getPreco_venda() {
+                return preco_venda;
+        }
+
+        /*? assim ou simples? public void setPreco_venda(float preco_compra) {
+                preco_venda= (float) (preco_compra + preco_compra*0.23 + 0.01);
+        }*/
 
         public String getFornecedor() {
                 return fornecedor;
