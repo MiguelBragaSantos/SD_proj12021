@@ -9,7 +9,7 @@ Como temos a classe cliente vendedor e cliente fornecedor, temos duas interfaces
 
 Interface com os metodos exclusivos ao fornecedor.
 
-#### InterfaceVendedor.java
+#### InterfaceCliente.java
 
 Interface com os metodos exclusivos ao vendedor.
 

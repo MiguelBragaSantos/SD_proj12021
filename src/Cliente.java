@@ -1,33 +1,41 @@
 
-
 import myinputs.*;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.Serializable;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.rmi.Naming;
+import java.rmi.RemoteException;
 
+public class Cliente implements InterfaceCliente, Serializable {
 
-public class Cliente {
+    private static InterfaceServidor look;
 
-    public static void main(String[] args) {
+    public Cliente() throws RemoteException {
+    }
 
-        String serverName = "";
-        System.setSecurityManager(new SecurityManager());
+    //quando o stock baixa para o minimo (depois de uma venda)
+    /*@Override
+    public void NotifyClient(String s) throws RemoteException {
+        System.out.println(s);
+    }*/
 
+    public static void main(String[] args) throws RemoteException, UnknownHostException {
+        new Cliente().run();
+    }
 
-        if (args.length != 1){
-            try {
-                serverName = java.net.InetAddress.getLocalHost().getHostName(); // isto serve para  ires buscar o nome do servidor
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else{
-            serverName = args[0];
-        }
-        if (serverName.equals("")){
-            System.out.println("usage: java RMIClient < host running RMI server>");
-            System.exit(0);
-        }
+    private void run() throws UnknownHostException {
+        //Configurações RMI
+        System.out.println((InterfaceCliente)this);
+        String url = "rmi://" + InetAddress.getLocalHost().getHostAddress() + ":1099/CR"; // isto serve para  ires buscar o nome do servidor
+        BufferedReader ob = new BufferedReader(new InputStreamReader(System.in));
 
         //Menu
         try{
+            look=(InterfaceServidor) Naming.lookup(url);
+
             int option;
             int x = 0;      //gerar loop
 
@@ -56,10 +64,43 @@ public class Cliente {
 
                     case 1: //Registar um produto;
 
+                        System.out.println("Nome da mobília:");
+                        String nome=ob.readLine();
+
+                        System.out.println("Categoria:\n " +
+                                "1-Móveis "+
+                                "2-Camas"+
+                                "3-Sofás "+
+                                "4-Exterior "+
+                                "5-Escritório "+
+                                "6-Decoração "+
+                                "7-Texteis "+
+                                "8-Electrodomésticos"+
+                                "9-Cozinha "+
+                                "10-Casa de banho "+
+                                "11- Smart Home"+
+                                "12- Animais"+
+                                "\n->");
+                        int catg =Read.mipInt();
+
+                        System.out.println("Stock minimo? Caso defina o valor standart press 0");
+                        int stock =Read.mipInt();
+
+                        System.out.println("Insira o nome do Fornecedor");
+                        //listar todos como sugestão
+                        String forn =Read.mipString();
+
+                        System.out.println("Insira o preço de compra:");
+                        float preco =Read.mipFloat();
+
+                        ClassProduto c= new ClassProduto(nome, catg, stock, forn, preco);
+                        look.RegistarProduto(c);
+
                         break;
 //--------------
 
                     case 2: //Adicionar uma certa quantidade de um produto já existente;
+
 
 
 
@@ -93,6 +134,11 @@ public class Cliente {
             System.out.println("Exception in client "+r.getMessage());
         }
 
+
+
+    }
+
+
         /*catch (RemoteException re) {
             System.out.println("RemoteException");
             System.out.println(re.getMessage());
@@ -107,6 +153,5 @@ public class Cliente {
 
 
 
-    }
 
 }

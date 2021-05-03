@@ -9,15 +9,16 @@ import java.io.Serializable;
 *               se for sofás: 1xxx
 *               se for camas: 2xxx
 *
-* - getters, setters
+*
 * */
 
 
 public class ClassProduto implements Serializable {
 
-        private int id; //categoria x id=1000; categoria y id=2000
+
+        private int id;
         private static int ultimo;
-        private String categoria;
+        private int categoria;
         private String nome;
 
         private int stock; //quantidade em stock
@@ -27,10 +28,12 @@ public class ClassProduto implements Serializable {
         private float preco_compra; //preço da compra ao fornecedor pelo vendedor
         private float preco_venda; //preço
 
+        private String fornecedor;
+
         public ClassProduto(){
                 ultimo++;
                 id=ultimo;
-                categoria="";
+                categoria=0;
                 nome="";
 
                 stock=0;
@@ -38,9 +41,10 @@ public class ClassProduto implements Serializable {
 
                 preco_compra=0;
                 preco_venda=0;
+                fornecedor="";
         }
 
-        public ClassProduto(String nome, String categoria, int add_stock, int min_stock){
+        public ClassProduto(String nome, int categoria, int add_stock, int min_stock, String fornecedor, float preco_compra){
                 ultimo++;
                 id=ultimo;
                 this.nome=nome;
@@ -49,7 +53,26 @@ public class ClassProduto implements Serializable {
                 stock = ++add_stock;
                 this.min_stock=min_stock;
 
-                //preços -> ver nas operações?
+                this.fornecedor=fornecedor;
+
+                this.preco_compra=preco_compra;
+                preco_venda= (float) (preco_compra + preco_compra*0.23 + 0.01);
+        }
+
+        //registar produto
+        public ClassProduto(String nome, int categoria, int min_stock, String fornecedor, float preco_compra){
+                ultimo++;
+                id=ultimo;
+                this.nome=nome;
+                this.categoria=categoria;
+
+                stock = 0;
+                this.min_stock=min_stock;
+
+                this.fornecedor=fornecedor;
+
+                this.preco_compra=preco_compra;
+                preco_venda= (float) (preco_compra + preco_compra*0.23 + 0.01);
         }
 
         //getters e setters
@@ -59,9 +82,62 @@ public class ClassProduto implements Serializable {
         public void setUltimo(int ultimo) {
                 this.ultimo = ultimo;
         }
+        public int getId() {
+                return id;
+        }
+
+        public void setId(int id) {
+                this.id = id;
+        }
+
+        public String getCategoria() {
+                return categoria;
+        }
+
+        public void setCategoria(String categoria) {
+                this.categoria = categoria;
+        }
+
+        public String getNome() {
+                return nome;
+        }
+
+        public void setNome(String nome) {
+                this.nome = nome;
+        }
+
+        public int getStock() {
+                return stock;
+        }
+
+        public void setStock(int stock) {
+                this.stock = stock;
+        }
+
+        public int getMin_stock() {
+                return min_stock;
+        }
+
+        public void setMin_stock(int min_stock) {
+                this.min_stock = min_stock;
+        }
+
+        public float getPreco_compra() {
+                return preco_compra;
+        }
+
+        public void setPreco_compra(float preco_compra) {
+                this.preco_compra = preco_compra;
+        }
 
 
-        ///FALTA
+        public String getFornecedor() {
+                return fornecedor;
+        }
+
+        public void setFornecedor(String fornecedor) {
+                this.fornecedor = fornecedor;
+        }
 
 
         //toString
