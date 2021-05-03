@@ -1,27 +1,113 @@
-import java.io.*;
-import java.rmi.RemoteException;
-import java.util.ArrayList;
 
-//servidor vai ser Impl
-public class Servidor extends java.rmi.server.UnicastRemoteObject implements InterfaceServidor{
+import java.io.*;
+import java.rmi.*;      //RemoteException, Naming
+import java.rmi.registry.Registry;
+import java.util.*;
+
+/*
+* fatal:
+* - public Servidor(ArrayList<ClassProduto> p) --> DEVIA TER AS 3 ARRAYLISTS/FILES
+* - no main: Servidor lserver=new Servidor(inicializarProd());  -> este inicializar devia inicializar os 3 e retornar 3
+
+ * */
+
+public class Servidor extends java.rmi.server.UnicastRemoteObject implements InterfaceServidor, Runnable{
+
+    Hashtable<String,InterfaceCliente> list = new Hashtable<String,InterfaceCliente> ();
 
     private ArrayList<ClassProduto> Produtos = new ArrayList<>();
-    private ArrayList<ClassOperacao> Vendas = new ArrayList<>();          //deviam ser do tipo da subclasse ou da super? agora ficou super: ClassOperacao
+
+    //deviam ser do tipo da subclasse ou da super? agora ficou super: ClassOperacao
+    private ArrayList<ClassOperacao> Vendas = new ArrayList<>();
     private ArrayList<ClassOperacao> Compras = new ArrayList<>();
 
-    public Servidor() throws RemoteException {
+    public Servidor(ArrayList<ClassProduto> p) throws RemoteException {
         super();
-    } // ,Runnable
+        this.Produtos=p;
+        //this.Vendas=v;
+        //this.Compras=c;
+    }
 
 
     public static void main(String[] argv) {
         //tratar do RMI
+        try {
+            Registry r= java.rmi.registry.LocateRegistry.createRegistry(1099);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        try{
+            Servidor lserver=new Servidor(inicializarProd());
+            Naming.rebind("Prod",lserver);
+
+            Thread thread= new Thread(lserver);
+            thread.start();
+        } catch (Exception e) {
+            System.err.println("Server exception: " + e.getMessage());
+        }
     }
+
+    //chamada no main do server - isto n está muito bem, devia ser tmb com os outros dois files
+    private synchronized static ArrayList<ClassProduto> inicializarProd() throws ClassNotFoundException {
+        ArrayList<ClassProduto> aux=new ArrayList<ClassProduto>();
+        try {
+            FileInputStream fis = new FileInputStream("Produtos_registados.txt");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+
+            aux = (ArrayList) ois.readObject();
+
+            ois.close();
+            fis.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        return aux;
+    }
+
+    @Override
+    public void run() {
+        while(true){
+            try {
+                Thread.sleep(10 * 1000);
+            } catch (InterruptedException ex) {
+                System.out.println(ex.getMessage());
+            }
+
+            Enumeration<String> enumeration = list.keys();
+            ArrayList<ClassProduto> cloneProd =  (ArrayList<ClassProduto>) Produtos.clone();
+            ArrayList<ClassOperacao> cloneVendas = (ArrayList<ClassOperacao>) Vendas.clone();
+            ArrayList<ClassOperacao> cloneCompras = (ArrayList<ClassOperacao>) Compras.clone();
+
+            while(enumeration.hasMoreElements()) {
+                String key = enumeration.nextElement();
+
+                for(int i=0;i<cloneProd.size();i++){
+                    ClassProduto a=cloneProd.get(i);
+
+                    if(a.getStock() < a.getMin_stock()){          //quando um produto fica abaixo do stock minimo -> notificar cliente
+                        InterfaceCliente b = ( InterfaceCliente) list.get(key);
+                        try{
+                            System.out.println(b);
+                            b.NotifyClient("O produto:" + key + ", está com pouco stock. Reponha sff, na opção 2 do MENU");
+                            list.remove(key);
+
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+    }//run
+
+
+
 
 
     //FUNÇÕES DO INTERFACE SERVIDOR
     @Override
-    public void RegistarProduto(ClassProduto c) throws RemoteException {
+    public synchronized void RegistarProduto(ClassProduto c) throws RemoteException {
         ArrayList<ClassProduto> arraylist_clone = (ArrayList<ClassProduto>) Produtos.clone();
         arraylist_clone.add(c);
         Produtos= (ArrayList<ClassProduto>) arraylist_clone.clone();
@@ -55,8 +141,6 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
     }
 
 
-
-    //add stock + registar compra
     @Override
     public synchronized void ComprarProduto(String nomeProd, int dia, int mes, int ano, int add_stock) throws RemoteException {
         //!!!!! falta consultar se produto existe no registo - arraylist de Produtos
@@ -135,15 +219,58 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
         }
     }
 
+
     @Override
     public ArrayList<ClassProduto> ConsultarProduto(String s) throws RemoteException {
+        /*
+        *
+        *
+        *
+        *
+        *
+        *
+        *
+        * */
         return null;
     }
 
     @Override
+    public synchronized ArrayList<ClassProduto> ConsultarProdutoCategoria(int s) throws RemoteException {
+        ArrayList<ClassProduto> aux = new ArrayList<ClassProduto>(); //arraylist com todos os valores true
+
+        for(int i=0;i<Produtos.size();i++){
+            ClassProduto a = Produtos.get(i);
+            if(a.getCategoria()==s)
+                aux.add(a);
+        }
+        return aux;
+    }
+
+    @Override
     public ArrayList<ClassOperacao> ConsultarVendas(String s) throws RemoteException {
+        /*
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         * */
+
         return null;
     }
+
+    @Override
+    public synchronized ArrayList<ClassOperacao> ListarVendas() throws RemoteException{
+        return Vendas;
+    }
+    public synchronized ArrayList<ClassOperacao> ListarCompras() throws RemoteException{
+        return Compras;
+    }
+
+
+
 
 
     //FUNÇOES AUXILIARES
@@ -159,7 +286,6 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
             e.printStackTrace();
         }
     }
-
     //separar vendas de compras -> 2 files
     private void EscreverFileCompras(ArrayList<ClassOperacao> c) throws IOException{ //synchronized static
         try{
@@ -186,27 +312,5 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
         }
     }
 
-
-
-
-
-    private synchronized static ArrayList<ClassProduto> inicializarProd() throws ClassNotFoundException {
-        ArrayList<ClassProduto> aux=new ArrayList<ClassProduto>();
-        try
-        {
-            FileInputStream fis = new FileInputStream("out.txt");
-            ObjectInputStream ois = new ObjectInputStream(fis);
-
-            aux = (ArrayList) ois.readObject();
-
-            ois.close();
-            fis.close();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        return aux;
-    }
 
 }

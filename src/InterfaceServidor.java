@@ -5,7 +5,6 @@ import java.util.ArrayList;
 //      -> isto serve para o callback
 public interface InterfaceServidor extends java.rmi.Remote{
 
-
     //registar produto
     /*
     *  fornecedor
@@ -30,9 +29,13 @@ public interface InterfaceServidor extends java.rmi.Remote{
         //por categoria, preço, stock ...
     public ArrayList<ClassProduto> ConsultarProduto(String s) throws java.rmi.RemoteException;
 
+    ArrayList<ClassProduto> ConsultarProdutoCategoria(int s) throws RemoteException;
+
     //? consultar saidas (vendas) VENDEDOR
     public ArrayList<ClassOperacao> ConsultarVendas(String s) throws java.rmi.RemoteException;
 
-    //consultar compras feitas ao Fornecedor FORNECEDOR
+    public ArrayList<ClassOperacao> ListarVendas() throws RemoteException;
+    public ArrayList<ClassOperacao> ListarCompras() throws RemoteException;
+
 
 }
