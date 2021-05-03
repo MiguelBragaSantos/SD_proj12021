@@ -16,7 +16,7 @@ public interface InterfaceServidor extends java.rmi.Remote{
     public void RegistarProduto(ClassProduto c) throws java.rmi.RemoteException;
 
     //entrada de stock (add/compra) FORNECEDOR
-    public void ComprarProduto(ArrayList produtos, int add_stock) throws java.rmi.RemoteException;
+    public void ComprarProduto(String nomeProd, int add_stock) throws java.rmi.RemoteException;
 
     //saída de stock (venda) VENDEDOR
     public void VenderProduto() throws java.rmi.RemoteException;

@@ -75,6 +75,7 @@ public class ClassProduto implements Serializable {
                 preco_venda= (float) (preco_compra + preco_compra*0.23 + 0.01);
         }
 
+
         //getters e setters
         public int getUltimo() {
                 return ultimo;
@@ -90,11 +91,11 @@ public class ClassProduto implements Serializable {
                 this.id = id;
         }
 
-        public String getCategoria() {
+        public int getCategoria() {
                 return categoria;
         }
 
-        public void setCategoria(String categoria) {
+        public void setCategoria(int categoria) {
                 this.categoria = categoria;
         }
 
@@ -145,4 +146,13 @@ public class ClassProduto implements Serializable {
                 String s = "ID: " + id + "\nNOME: " + nome + "\nCATEGORIA: " + categoria + "\nSTOCK: " + stock;
                 return s;
         }
+
+        @Override
+        public boolean equals(Object o) {
+                if (this == o) return true;
+                if (!(o instanceof ClassProduto)) return false;
+                ClassProduto that = (ClassProduto) o;
+                return nome.equals(that.nome);
+        }
+
 }

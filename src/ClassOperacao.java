@@ -15,6 +15,7 @@ public class ClassOperacao implements Serializable {
     private int nOperacao;
     private static int ultimo;
 
+
     private int codigo; //código do produto
     //preços estão nas classes OpCompra e OpVenda
 

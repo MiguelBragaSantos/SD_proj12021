@@ -65,7 +65,7 @@ public class Cliente implements InterfaceCliente, Serializable {
                     case 1: //Registar um produto;
 
                         System.out.println("Nome da mobília:");
-                        String nome=ob.readLine();
+                        String nome1=ob.readLine();
 
                         System.out.println("Categoria:\n " +
                                 "1-Móveis "+
@@ -93,16 +93,19 @@ public class Cliente implements InterfaceCliente, Serializable {
                         System.out.println("Insira o preço de compra:");
                         float preco =Read.mipFloat();
 
-                        ClassProduto c= new ClassProduto(nome, catg, stock, forn, preco);
+                        ClassProduto c= new ClassProduto(nome1, catg, stock, forn, preco);
                         look.RegistarProduto(c);
 
                         break;
 //--------------
 
                     case 2: //Adicionar uma certa quantidade de um produto já existente;
+                        System.out.println("Nome da mobília a comprar:");
+                        String nome2=ob.readLine();
+                        System.out.println("Quantidade a comprar:");
+                        int stock2 =Read.mipInt();
 
-
-
+                        look.ComprarProduto(nome2, stock2);
 
                         break;
 //--------------

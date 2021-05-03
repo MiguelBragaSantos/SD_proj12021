@@ -1,9 +1,8 @@
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
+//servidor vai ser Impl
 public class Servidor extends java.rmi.server.UnicastRemoteObject implements InterfaceServidor{
 
     private ArrayList<ClassProduto> Produtos = new ArrayList<>();
@@ -17,7 +16,7 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
 
 
     public static void main(String[] argv) {
-        //tratar dos files
+        //tratar do RMI
     }
 
 
@@ -37,9 +36,25 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
 
     //add stock + registar compra
     @Override
-    public void ComprarProduto(ArrayList produtos, int add_stock) throws RemoteException {
+    public synchronized void ComprarProduto(String nomeProd, int add_stock) throws RemoteException {
+        //consultar se produto existe no registo - arraylist de Produtos
+        ArrayList<ClassProduto> arrayListClone = (ArrayList<ClassProduto>) Produtos.clone();
 
-    }
+        //OpCompra
+
+
+
+        //alterar stock dp produto no arraylist
+        for(int i=0;i<arrayListClone.size();i++){
+            ClassProduto a = arrayListClone.get(i);
+            if(a.getNome().equals(nomeProd)){
+                //adicionar stock
+                int tot = a.getStock() + add_stock;
+                a.setStock(tot);
+
+            }
+
+        }
 
     @Override
     public void VenderProduto() throws RemoteException {
@@ -75,6 +90,24 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
         {
             e.printStackTrace();
         }
-
     }
+    private synchronized static ArrayList<ClassProduto> inicializarProd() throws ClassNotFoundException {
+        ArrayList<ClassProduto> aux=new ArrayList<ClassProduto>();
+        try
+        {
+            FileInputStream fis = new FileInputStream("out.txt");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+
+            aux = (ArrayList) ois.readObject();
+
+            ois.close();
+            fis.close();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return aux;
+    }
+
 }
