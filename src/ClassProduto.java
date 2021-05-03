@@ -44,21 +44,6 @@ public class ClassProduto implements Serializable {
                 fornecedor="";
         }
 
-        public ClassProduto(String nome, int categoria, int add_stock, int min_stock, String fornecedor, float preco_compra){
-                ultimo++;
-                id=ultimo;
-                this.nome=nome;
-                this.categoria=categoria;
-
-                stock = ++add_stock;
-                this.min_stock=min_stock;
-
-                this.fornecedor=fornecedor;
-
-                this.preco_compra=preco_compra;
-                preco_venda= (float) (preco_compra + preco_compra*0.23 + 0.01);
-        }
-
         //registar produto
         public ClassProduto(String nome, int categoria, int min_stock, String fornecedor, float preco_compra){
                 ultimo++;
@@ -72,7 +57,7 @@ public class ClassProduto implements Serializable {
                 this.fornecedor=fornecedor;
 
                 this.preco_compra=preco_compra;
-                preco_venda= (float) (preco_compra + preco_compra*0.23 + 0.01);
+                preco_venda = (float) (preco_compra + preco_compra*0.23 + 0.01);
         }
 
         //getters e setters
@@ -142,7 +127,7 @@ public class ClassProduto implements Serializable {
 
         //toString
         public String toString() {
-                String s = "ID: " + id + "\nNOME: " + nome + "\nCATEGORIA: " + categoria + "\nSTOCK: " + stock;
+                String s = "ID: " + id + "\nNOME: " + nome + "\nCATEGORIA: " + categoria + "\nSTOCK: " + stock + "\nFORNECEDOR: " + fornecedor;
                 return s;
         }
 }
