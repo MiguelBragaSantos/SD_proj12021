@@ -44,14 +44,14 @@ public class Cliente implements InterfaceCliente, Serializable {
             while( x==0 ){
                 do {
                     System.out.println("----Mobiliário----");
-                    System.out.println("F1- Registar um produto -->");
-                    System.out.println("F2- Efetuar compra | Adicionar uma certa quantidade -->");
-                    System.out.println("V3- Vender | Dar saída/venda de um produto -->");
-                    System.out.println("F4- Eliminar um produto-->");
-                    System.out.println("V5- Consultar produtos existentes-->");
-                    System.out.println("F6- Consultar as vendas (listar todas/ consultar por ordem de valor/produto mais vendido ...-->");
-                    System.out.println("V7- Consultar as compras feitas a um fornecedor (listar todas/ consultar por ordem de valor -->");
-                    System.out.println("8 -Sair-->8");
+                    System.out.println("1- Registar um produto -->");
+                    System.out.println("2- Efetuar compra | Adicionar uma certa quantidade -->");
+                    System.out.println("3- Vender | Dar saída/venda de um produto -->");
+                    System.out.println("4- Eliminar um produto-->");
+                    System.out.println("5- Consultar produtos existentes-->");
+                    System.out.println("6- Consultar as vendas (listar todas/ consultar por ordem de valor/produto mais vendido ...-->");
+                    System.out.println("7- Consultar as compras feitas a um fornecedor (listar todas/ consultar por ordem de valor -->");
+                    System.out.println("8 -Sair-->");
 
                     option = Read.mipInt();
 
@@ -86,10 +86,8 @@ public class Cliente implements InterfaceCliente, Serializable {
 
                         System.out.println("Stock minimo? Caso defina o valor standart press 0");
                         int stock1 =Read.mipInt();
-
                         System.out.println("Insira o nome do Fornecedor");
                         String forn1 =Read.mipString();
-
                         System.out.println("Insira o preço de compra:");
                         float preco1 =Read.mipFloat();
 
