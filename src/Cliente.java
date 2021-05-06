@@ -1,12 +1,13 @@
 
 import myinputs.*;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.IOException;
 import java.io.Serializable;
 import java.net.InetAddress;
+import java.net.MalformedURLException;
 import java.net.UnknownHostException;
 import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -24,11 +25,11 @@ public class Cliente implements InterfaceCliente, Serializable {
         System.out.println(s);
     }
 
-    public static void main(String[] args) throws RemoteException, UnknownHostException {
+    public static void main(String[] args) throws UnknownHostException, NotBoundException, MalformedURLException, RemoteException, IOException {
         new Cliente().runCliente();
     }
 
-    private void runCliente() throws UnknownHostException, RemoteException {
+    private void runCliente() throws IOException, NotBoundException {
         System.out.println((InterfaceCliente)this);
 
         //Configurações RMI

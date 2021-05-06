@@ -14,7 +14,6 @@ import java.util.*;
 public class Servidor extends java.rmi.server.UnicastRemoteObject implements InterfaceServidor, Runnable{
 
     Hashtable<String,InterfaceCliente> list = new Hashtable<String,InterfaceCliente> ();
-
     private ArrayList<ClassProduto> Produtos = new ArrayList<>();
 
     //deviam ser do tipo da subclasse ou da super? agora ficou super: ClassOperacao
@@ -47,22 +46,26 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
         }
     }
 
-    //chamada no main do server - isto n está muito bem, devia ser tmb com os outros dois files
+    //chamada no main do server
+    //- isto n está muito bem, devia ser tmb com os outros dois files
     private synchronized static ArrayList<ClassProduto> inicializarProd() throws ClassNotFoundException {
-        ArrayList<ClassProduto> aux=new ArrayList<ClassProduto>();
+        ArrayList<ClassProduto> auxP=new ArrayList<ClassProduto>();
+        //ArrayList<ClassOperacao> auxV=new ArrayList<ClassOperacao>();
+        //ArrayList<ClassOperacao> auxC = new ArrayList<ClassOperacao>();
+
         try {
-            FileInputStream fis = new FileInputStream("Produtos_registados.txt");
-            ObjectInputStream ois = new ObjectInputStream(fis);
+            FileInputStream fisP = new FileInputStream("Produtos_registados.txt");
+            ObjectInputStream oisP = new ObjectInputStream(fisP);
+            auxP = (ArrayList) oisP.readObject();
 
-            aux = (ArrayList) ois.readObject();
+            oisP.close();
+            fisP.close();
 
-            ois.close();
-            fis.close();
         }
         catch (IOException e) {
             e.printStackTrace();
         }
-        return aux;
+        return auxP;
     }
 
     @Override
