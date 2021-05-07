@@ -54,6 +54,14 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
         //ArrayList<ClassOperacao> auxC = new ArrayList<ClassOperacao>();
 
         try {
+            FileOutputStream fos = new FileOutputStream("Produtos_registados.txt");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            
+            oos.close();
+            fos.close();
+
+
+            //-----
             FileInputStream fisP = new FileInputStream("Produtos_registados.txt");
             ObjectInputStream oisP = new ObjectInputStream(fisP);
             auxP = (ArrayList) oisP.readObject();
@@ -277,11 +285,12 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
 
 
     //FUNÇOES AUXILIARES
-    private void EscreverFileProd(ArrayList<ClassProduto> c) throws IOException, FileNotFoundException{ //synchronized static
+    private void EscreverFileProd(ArrayList<ClassProduto> c) throws IOException { //synchronized static
         try{
             FileOutputStream fos = new FileOutputStream("Produtos_registados.txt");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(c);
+
             oos.flush();
 
             oos.close();
@@ -297,7 +306,9 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
             FileOutputStream fos = new FileOutputStream("Compras.txt");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(c);
+
             oos.flush();
+
             oos.close();
             fos.close();
         } catch (IOException e)
