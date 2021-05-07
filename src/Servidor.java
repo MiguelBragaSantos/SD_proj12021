@@ -28,23 +28,7 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
     }
 
 
-    public static void main(String[] argv) {
-        //tratar do RMI
-        try {
-            Registry r= java.rmi.registry.LocateRegistry.createRegistry(1099);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        try{
-            Servidor lserver=new Servidor(inicializarProd());
-            Naming.rebind("Prod",lserver);
 
-            Thread thread= new Thread(lserver);
-            thread.start();
-        } catch (Exception e) {
-            System.err.println("Server exception: " + e.getMessage());
-        }
-    }
 
     //chamada no main do server
     //- isto n está muito bem, devia ser tmb com os outros dois files
@@ -56,7 +40,7 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
         try {
             FileOutputStream fos = new FileOutputStream("Produtos_registados.txt");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            
+
             oos.close();
             fos.close();
 
@@ -75,45 +59,6 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
         }
         return auxP;
     }
-
-    @Override
-    public void run() {
-        while(true){
-            try {
-                Thread.sleep(10 * 1000);
-            } catch (InterruptedException ex) {
-                System.out.println(ex.getMessage());
-            }
-
-            Enumeration<String> enumeration = list.keys();
-            ArrayList<ClassProduto> cloneProd =  (ArrayList<ClassProduto>) Produtos.clone();
-            ArrayList<ClassOperacao> cloneVendas = (ArrayList<ClassOperacao>) Vendas.clone();
-            ArrayList<ClassOperacao> cloneCompras = (ArrayList<ClassOperacao>) Compras.clone();
-
-            while(enumeration.hasMoreElements()) {
-                String key = enumeration.nextElement();
-
-                for(int i=0;i<cloneProd.size();i++){
-                    ClassProduto a=cloneProd.get(i);
-
-                    if(a.getStock() < a.getMin_stock()){          //quando um produto fica abaixo do stock minimo -> notificar cliente
-                        InterfaceCliente b = ( InterfaceCliente) list.get(key);
-                        try{
-                            System.out.println(b);
-                            b.NotifyClient("O produto:" + key + ", está com pouco stock. Reponha sff, na opção 2 do MENU");
-                            list.remove(key);
-
-                        } catch (RemoteException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-        }
-    }//run
-
-
-
 
 
     //FUNÇÕES DO INTERFACE SERVIDOR
@@ -331,6 +276,65 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
             e.printStackTrace();
         }
     }
+
+
+    public static void main(String[] argv) {
+        //tratar do RMI
+        try {
+            Registry r= java.rmi.registry.LocateRegistry.createRegistry(1099);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        try{
+            Servidor lserver=new Servidor(inicializarProd());
+            Naming.rebind("Prod",lserver);
+
+            Thread thread= new Thread(lserver);
+            thread.start();
+        } catch (Exception e) {
+            System.err.println("Server exception: " + e.getMessage());
+        }
+    }
+
+
+    @Override
+    public void run() {
+        while(true){
+            try {
+                Thread.sleep(10 * 1000);
+            } catch (InterruptedException ex) {
+                System.out.println(ex.getMessage());
+            }
+
+            Enumeration<String> enumeration = list.keys();
+            ArrayList<ClassProduto> cloneProd =  (ArrayList<ClassProduto>) Produtos.clone();
+            ArrayList<ClassOperacao> cloneVendas = (ArrayList<ClassOperacao>) Vendas.clone();
+            ArrayList<ClassOperacao> cloneCompras = (ArrayList<ClassOperacao>) Compras.clone();
+
+            while(enumeration.hasMoreElements()) {
+                String key = enumeration.nextElement();
+
+                for(int i=0;i<cloneProd.size();i++){
+                    ClassProduto a=cloneProd.get(i);
+
+                    if(a.getStock() < a.getMin_stock()){          //quando um produto fica abaixo do stock minimo -> notificar cliente
+                        InterfaceCliente b = ( InterfaceCliente) list.get(key);
+                        try{
+                            System.out.println(b);
+                            b.NotifyClient("O produto:" + key + ", está com pouco stock. Reponha sff, na opção 2 do MENU");
+                            list.remove(key);
+
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+    }//run
+
+
+
 
 
 }
