@@ -1,6 +1,9 @@
+/*
+ * Add VM options
+ * -Djava.security.policy=D:\MIP\EI\1SD\1Praticas\G14_Mobiliario\SD_proj12021\src\permissoes.policy
+ * */
 
 import myinputs.*;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.InetAddress;
@@ -29,7 +32,7 @@ public class Cliente implements InterfaceCliente, Serializable {
         new Cliente().runCliente();
     }
 
-    private void runCliente() throws IOException, NotBoundException {
+    private int runCliente() throws IOException, NotBoundException {
         System.out.println((InterfaceCliente)this);
 
         //Configurações RMI
@@ -37,7 +40,8 @@ public class Cliente implements InterfaceCliente, Serializable {
 
         //Menu
         try{
-            look=(InterfaceServidor) Naming.lookup(url);
+
+            look = (InterfaceServidor) Naming.lookup(url);
 
             int option;
             int x = 0;      //gerar loop
@@ -149,21 +153,13 @@ public class Cliente implements InterfaceCliente, Serializable {
                         int opcao5=Read.mipInt();
                         switch (opcao5){
 
-                            /*
-                            *
-                            *
-                            *
-                            *
-                            *
-                            *
-                            *
-                            *
-                            *
-                            *
-                            *
-                            * */
+                            case 1:
 
+                                break;
 
+                            case 2:
+
+                                break;
 
 
                             case 3:
@@ -178,8 +174,8 @@ public class Cliente implements InterfaceCliente, Serializable {
                                         "8-Electrodomésticos"+
                                         "9-Cozinha "+
                                         "10-Casa de banho "+
-                                        "11- Smart Home"+
-                                        "12- Animais"+
+                                        "11-Smart Home"+
+                                        "12-Animais"+
                                         "\n->");
                                 int catg5 =Read.mipInt();
                                 ArrayList<ClassProduto> p1=look.ConsultarProdutoCategoria(catg5);
@@ -204,6 +200,9 @@ public class Cliente implements InterfaceCliente, Serializable {
                         System.out.println("Listar todas as vendas-->1");
                         System.out.println("Consultar por preço venda ascendente-->2");
                         System.out.println("Consultar por preço venda descendente-->3");
+
+                        //Consultar vendas
+
                         System.out.println("Consultar por produto mais vendido-->4");
 
                         int opcao6=Read.mipInt();
@@ -275,11 +274,16 @@ public class Cliente implements InterfaceCliente, Serializable {
 //--------------
                         }
                         break;
+                    case 8:
+                        System.out.println("Hasta la vista baby");
+                        return 0;
+
                     default:
                         System.out.println("Numero invalido");
                         break;
                 }
             } } catch(Exception r){
             System.out.println("Exception in client "+r.getMessage()); }
+    return 1;
     }//run
 }

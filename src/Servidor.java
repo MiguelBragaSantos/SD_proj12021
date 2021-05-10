@@ -1,3 +1,8 @@
+/*
+* Add VM options
+* -Djava.security.policy=D:\MIP\EI\1SD\1Praticas\G14_Mobiliario\SD_proj12021\src\permissoes.policy
+* */
+
 
 import java.io.*;
 import java.rmi.*;      //RemoteException, Naming
@@ -15,8 +20,6 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
 
     Hashtable<String,InterfaceCliente> list = new Hashtable<String,InterfaceCliente> ();
     private ArrayList<ClassProduto> Produtos = new ArrayList<>();
-
-    //deviam ser do tipo da subclasse ou da super? agora ficou super: ClassOperacao
     private ArrayList<ClassOperacao> Vendas = new ArrayList<>();
     private ArrayList<ClassOperacao> Compras = new ArrayList<>();
 
@@ -28,24 +31,22 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
     }
 
 
-
-
-    //chamada no main do server
-    //- isto n está muito bem, devia ser tmb com os outros dois files
+    //1º a executar
     private synchronized static ArrayList<ClassProduto> inicializarProd() throws ClassNotFoundException {
         ArrayList<ClassProduto> auxP=new ArrayList<ClassProduto>();
-        //ArrayList<ClassOperacao> auxV=new ArrayList<ClassOperacao>();
-        //ArrayList<ClassOperacao> auxC = new ArrayList<ClassOperacao>();
+        ArrayList<ClassOperacao> auxV=new ArrayList<ClassOperacao>();
+        ArrayList<ClassOperacao> auxC = new ArrayList<ClassOperacao>();
 
         try {
+
             FileOutputStream fos = new FileOutputStream("Produtos_registados.txt");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-
+            oos.writeObject(fos);
+            fos.flush();
+            oos.flush();
             oos.close();
             fos.close();
 
-
-            //-----
             FileInputStream fisP = new FileInputStream("Produtos_registados.txt");
             ObjectInputStream oisP = new ObjectInputStream(fisP);
             auxP = (ArrayList) oisP.readObject();
@@ -99,7 +100,6 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
 
     @Override
     public synchronized void ComprarProduto(String nomeProd, int dia, int mes, int ano, int add_stock) throws RemoteException {
-        //!!!!! falta consultar se produto existe no registo - arraylist de Produtos
         ArrayList<ClassProduto> arrayListClone = (ArrayList<ClassProduto>) Produtos.clone();
 
         for (int i = 0; i < arrayListClone.size(); i++) {
@@ -130,7 +130,6 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
 
     @Override
     public synchronized void VenderProduto(String nomeProd, int dia, int mes, int ano, int sub_stock) throws RemoteException {
-        //consultar se produto existe no registo - arraylist de Produtos
         ArrayList<ClassProduto> arrayListClone = (ArrayList<ClassProduto>) Produtos.clone();
 
         for (int i = 0; i < arrayListClone.size(); i++) {
@@ -192,7 +191,7 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
 
     @Override
     public synchronized ArrayList<ClassProduto> ConsultarProdutoCategoria(int s) throws RemoteException {
-        ArrayList<ClassProduto> aux = new ArrayList<ClassProduto>(); //arraylist com todos os valores true
+        ArrayList<ClassProduto> aux = new ArrayList<ClassProduto>();
 
         for(int i=0;i<Produtos.size();i++){
             ClassProduto a = Produtos.get(i);
@@ -224,7 +223,9 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
     public synchronized ArrayList<ClassOperacao> ListarCompras() throws RemoteException{
         return Compras;
     }
-
+    public synchronized ArrayList<ClassProduto> ListarProdutos() throws RemoteException{
+        return Produtos;
+    }
 
 
 
@@ -279,20 +280,28 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
 
 
     public static void main(String[] argv) {
-        //tratar do RMI
+        //Iniciar a execução do registry no porto 1099
         try {
-            Registry r= java.rmi.registry.LocateRegistry.createRegistry(1099);
+            //Registry r =
+            java.rmi.registry.LocateRegistry.createRegistry(1099);
+            System.out.println("mipRMI registry ready.");
         } catch (RemoteException e) {
+            System.out.println("mipException starting RMI registry:");
             e.printStackTrace();
         }
         try{
-            Servidor lserver=new Servidor(inicializarProd());
+            //Servidor é onde está a Impl
+            Servidor lserver=new Servidor(inicializarProd()); //1º a executar
+
             Naming.rebind("Prod",lserver);
+
+            System.out.println("mipServidor está OK");
+
 
             Thread thread= new Thread(lserver);
             thread.start();
         } catch (Exception e) {
-            System.err.println("Server exception: " + e.getMessage());
+            System.err.println("mipServer exception: " + e.getMessage());
         }
     }
 
