@@ -38,7 +38,7 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
         ArrayList<ClassOperacao> auxC = new ArrayList<ClassOperacao>();
 
         try {
-
+            // * para tratar a excecao
             FileOutputStream fos = new FileOutputStream("Produtos_registados.txt");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(fos);
@@ -46,6 +46,7 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
             oos.flush();
             oos.close();
             fos.close();
+            // *
 
             FileInputStream fisP = new FileInputStream("Produtos_registados.txt");
             ObjectInputStream oisP = new ObjectInputStream(fisP);
@@ -53,7 +54,6 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
 
             oisP.close();
             fisP.close();
-
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -100,6 +100,9 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
 
     @Override
     public synchronized void ComprarProduto(String nomeProd, int dia, int mes, int ano, int add_stock) throws RemoteException {
+
+        //!!!!! falta consultar se produto existe no registo - arraylist de Produtos
+
         ArrayList<ClassProduto> arrayListClone = (ArrayList<ClassProduto>) Produtos.clone();
 
         for (int i = 0; i < arrayListClone.size(); i++) {
@@ -130,6 +133,8 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
 
     @Override
     public synchronized void VenderProduto(String nomeProd, int dia, int mes, int ano, int sub_stock) throws RemoteException {
+        //consultar se produto existe no registo - arraylist de Produtos
+
         ArrayList<ClassProduto> arrayListClone = (ArrayList<ClassProduto>) Produtos.clone();
 
         for (int i = 0; i < arrayListClone.size(); i++) {
@@ -176,22 +181,113 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
 
 
     @Override
-    public ArrayList<ClassProduto> ConsultarProduto(String s) throws RemoteException {
-        /*
-        *
-        *
-        *
-        *
-        *
-        *
-        *
-        * */
-        return null;
+    public ClassProduto ConsultarProduto(String s) throws RemoteException {
+        ClassProduto a = new ClassProduto();
+        for(int i=0;i<Produtos.size();i++){
+            a = Produtos.get(i);
+            if(a.getNome().equals(s))
+                break;
+        }
+        return a;
     }
 
+    public synchronized ArrayList<ClassProduto> ConsultarProdutoStockDesc() throws RemoteException {
+        ArrayList<ClassProduto> aux = Produtos; //arraylist com todos os valores true
+
+        Collections.sort(aux, new Comparator<ClassProduto>() {
+            @Override
+            public int compare(ClassProduto z1, ClassProduto z2) {
+                if (z1.getStock() < z2.getStock())
+                    return 1;
+                if (z1.getStock() > z2.getStock())
+                    return -1;
+                return 0;
+            }
+        });
+        return aux;
+    }
+
+    public synchronized ArrayList<ClassProduto> ConsultarProdutoStockCresc() throws RemoteException {
+        ArrayList<ClassProduto> aux = Produtos; //arraylist com todos os valores true
+
+        Collections.sort(aux, new Comparator<ClassProduto>() {
+            @Override
+            public int compare(ClassProduto z1, ClassProduto z2) {
+                if (z1.getStock() > z2.getStock())
+                    return 1;
+                if (z1.getStock() < z2.getStock())
+                    return -1;
+                return 0;
+            }
+        });
+        return aux;
+    }
+    public synchronized ArrayList<ClassProduto> ConsultarProdutoPrecoCompraDesc() throws RemoteException {
+        ArrayList<ClassProduto> aux = Produtos; //arraylist com todos os valores true
+
+        Collections.sort(aux, new Comparator<ClassProduto>() {
+            @Override
+            public int compare(ClassProduto z1, ClassProduto z2) {
+                if (z1.getPreco_compra() < z2.getPreco_compra())
+                    return 1;
+                if (z1.getPreco_compra() > z2.getPreco_compra())
+                    return -1;
+                return 0;
+            }
+        });
+        return aux;
+    }
+
+    public synchronized ArrayList<ClassProduto> ConsultarProdutoPrecoCompraCresc() throws RemoteException {
+        ArrayList<ClassProduto> aux = Produtos; //arraylist com todos os valores true
+
+        Collections.sort(aux, new Comparator<ClassProduto>() {
+            @Override
+            public int compare(ClassProduto z1, ClassProduto z2) {
+                if (z1.getPreco_compra() > z2.getPreco_compra())
+                    return 1;
+                if (z1.getPreco_compra() < z2.getPreco_compra())
+                    return -1;
+                return 0;
+            }
+        });
+        return aux;
+    }
+
+    public synchronized ArrayList<ClassProduto> ConsultarProdutoPrecoVendaDesc() throws RemoteException {
+        ArrayList<ClassProduto> aux = Produtos; //arraylist com todos os valores true
+
+        Collections.sort(aux, new Comparator<ClassProduto>() {
+            @Override
+            public int compare(ClassProduto z1, ClassProduto z2) {
+                if (z1.getPreco_venda() < z2.getPreco_venda())
+                    return 1;
+                if (z1.getPreco_venda() > z2.getPreco_venda())
+                    return -1;
+                return 0;
+            }
+        });
+        return aux;
+    }
+
+    public synchronized ArrayList<ClassProduto> ConsultarProdutoPrecoVendaCresc() throws RemoteException {
+        ArrayList<ClassProduto> aux = Produtos; //arraylist com todos os valores true
+
+        Collections.sort(aux, new Comparator<ClassProduto>() {
+            @Override
+            public int compare(ClassProduto z1, ClassProduto z2) {
+                if (z1.getPreco_venda() > z2.getPreco_venda())
+                    return 1;
+                if (z1.getPreco_venda() < z2.getPreco_venda())
+                    return -1;
+                return 0;
+            }
+        });
+        return aux;
+    }
     @Override
     public synchronized ArrayList<ClassProduto> ConsultarProdutoCategoria(int s) throws RemoteException {
-        ArrayList<ClassProduto> aux = new ArrayList<ClassProduto>();
+        ArrayList<ClassProduto> aux = new ArrayList<ClassProduto>(); //arraylist com todos os valores true
 
         for(int i=0;i<Produtos.size();i++){
             ClassProduto a = Produtos.get(i);
@@ -201,19 +297,100 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
         return aux;
     }
 
-    @Override
-    public ArrayList<ClassOperacao> ConsultarVendas(String s) throws RemoteException {
-        /*
-         *
-         *
-         *
-         *
-         *
-         *
-         *
-         * */
 
-        return null;
+    @Override
+    public synchronized ArrayList<ClassOperacao> ConsultarVendasProduto(String s) throws RemoteException {
+        ArrayList<ClassOperacao> aux = new ArrayList<ClassOperacao>(); //arraylist com todos os valores true
+        int id = 0;
+        for (int j=0; j<Produtos.size(); j++){
+            ClassProduto aux_prod = Produtos.get(j);
+            if (aux_prod.getNome().equals(s))
+                id = aux_prod.getId();
+        }
+
+        for(int i=0;i<Vendas.size();i++){
+            ClassOperacao a = Vendas.get(i);
+            if(a.getCodigo() == id)
+                aux.add(a);
+        }
+        return aux;
+    }
+
+    @Override
+    public synchronized ArrayList<ClassOperacao> ConsultarComprasFornecedor(String s) throws RemoteException {
+        ArrayList<ClassOperacao> aux = new ArrayList<ClassOperacao>(); //arraylist com todos os valores true
+        List<Integer> Ids = new ArrayList<>();
+        for (int j=0; j<Produtos.size(); j++){
+            ClassProduto aux_prod = Produtos.get(j);
+            if (aux_prod.getFornecedor().equals(s))
+                Ids.add(aux_prod.getId());
+        }
+
+        for(int k=0; k<Ids.size();k++) {
+            for(int i=0;i<Compras.size();i++){
+                ClassOperacao a = Compras.get(i);
+                if(a.getCodigo() == Ids.get(k))
+                    aux.add(a);
+            }
+        }
+        return aux;
+    }
+    @Override
+    public synchronized ArrayList<ClassOperacao> ConsultarComprasCategoria(int s) throws RemoteException {
+        ArrayList<ClassOperacao> aux = new ArrayList<ClassOperacao>(); //arraylist com todos os valores true
+        List<Integer> Ids = new ArrayList<>();
+        for (int j=0; j<Produtos.size(); j++){
+            ClassProduto aux_prod = Produtos.get(j);
+            if (aux_prod.getCategoria() == s)
+                Ids.add(aux_prod.getId());
+        }
+
+        for(int k=0; k<Ids.size();k++) {
+            for(int i=0;i<Compras.size();i++){
+                ClassOperacao a = Compras.get(i);
+                if(a.getCodigo() == Ids.get(k))
+                    aux.add(a);
+            }
+        }
+        return aux;
+    }
+    @Override
+    public synchronized ArrayList<ClassOperacao> ConsultarVendasCategoria(int s) throws RemoteException {
+        ArrayList<ClassOperacao> aux = new ArrayList<ClassOperacao>(); //arraylist com todos os valores true
+        List<Integer> Ids = new ArrayList<>();
+        for (int j=0; j<Produtos.size(); j++){
+            ClassProduto aux_prod = Produtos.get(j);
+            if (aux_prod.getCategoria() == s)
+                Ids.add(aux_prod.getId());
+        }
+
+        for(int k=0; k<Ids.size();k++) {
+            for(int i=0;i<Vendas.size();i++){
+                ClassOperacao a = Vendas.get(i);
+                if(a.getCodigo() == Ids.get(k))
+                    aux.add(a);
+            }
+        }
+        return aux;
+    }
+
+
+    @Override
+    public synchronized ArrayList<ClassOperacao> ConsultarComprasProduto(String s) throws RemoteException {
+        ArrayList<ClassOperacao> aux = new ArrayList<ClassOperacao>(); //arraylist com todos os valores true
+        int id = 0;
+        for (int j=0; j<Produtos.size(); j++){
+            ClassProduto aux_prod = Produtos.get(j);
+            if (aux_prod.getNome().equals(s))
+                id = aux_prod.getId();
+        }
+
+        for(int i=0;i<Compras.size();i++){
+            ClassOperacao a = Compras.get(i);
+            if(a.getCodigo() == id)
+                aux.add(a);
+        }
+        return aux;
     }
 
     @Override
@@ -223,9 +400,10 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
     public synchronized ArrayList<ClassOperacao> ListarCompras() throws RemoteException{
         return Compras;
     }
-    public synchronized ArrayList<ClassProduto> ListarProdutos() throws RemoteException{
-        return Produtos;
-    }
+
+
+
+
 
 
 

@@ -15,17 +15,18 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
-public class Cliente implements InterfaceCliente, Serializable {
+public class Cliente extends java.rmi.server.UnicastRemoteObject implements InterfaceCliente, Serializable {
 
     private static InterfaceServidor look; //vamos aceder às funções do servidor pela key: look
 
     public Cliente() throws RemoteException {
+        super();
     }
 
-    //quando o stock baixa para o minimo (depois de uma venda)
+    //método remoto:quando o stock baixa para o minimo (depois de uma venda)
     @Override
     public void NotifyClient(String s) throws RemoteException {
-        System.out.println(s);
+        System.out.println("mipMensagem do Servidor: " + s);
     }
 
     public static void main(String[] args) throws UnknownHostException, NotBoundException, MalformedURLException, RemoteException, IOException {
@@ -38,9 +39,7 @@ public class Cliente implements InterfaceCliente, Serializable {
         //Configurações RMI
         String url = "rmi://" + InetAddress.getLocalHost().getHostAddress() + ":1099/Prod"; // isto serve para ir buscar o nome do servidor + label usada para o Registry (inicializarProd - servidor)
 
-        //Menu
         try{
-
             look = (InterfaceServidor) Naming.lookup(url);
 
             int option;
@@ -145,22 +144,33 @@ public class Cliente implements InterfaceCliente, Serializable {
                         break;
 //--------------
                     case 5: //Consultar produtos existentes. Prever vários tipos de consultas;
-                        System.out.println("Consultar por stock ascendente-->1");
-                        System.out.println("Consultar por stock descendente-->2");
+                        System.out.println("Consultar por stock descendente-->1");
+                        System.out.println("Consultar por stock ascendente-->2");
                         System.out.println("Consultar por categoria-->3");
-                        System.out.println("Consultar por preço compra ascendente-->4");
+                        System.out.println("Consultar por preço compra descendente-->4");
                         System.out.println("Consultar por preço compra ascendente-->5");
+                        System.out.println("Consultar por preço venda descendente-->6");
+                        System.out.println("Consultar por preço venda ascendente-->7");
+                        System.out.println("Consultar por nome-->8");
+
                         int opcao5=Read.mipInt();
                         switch (opcao5){
 
                             case 1:
-
+                                ArrayList<ClassProduto> p6 = look.ConsultarProdutoStockDesc();
+                                for(int i=0; i<p6.size();i++){
+                                    System.out.println(p6.get(i).toString());
+                                }
+                                p6.clear();
                                 break;
 
                             case 2:
-
+                                ArrayList<ClassProduto> p7 = look.ConsultarProdutoStockCresc();
+                                for(int i=0; i<p7.size();i++){
+                                    System.out.println(p7.get(i).toString());
+                                }
+                                p7.clear();
                                 break;
-
 
                             case 3:
                                 System.out.println("Insira a categoria a procurar:\n");
@@ -174,8 +184,8 @@ public class Cliente implements InterfaceCliente, Serializable {
                                         "8-Electrodomésticos"+
                                         "9-Cozinha "+
                                         "10-Casa de banho "+
-                                        "11-Smart Home"+
-                                        "12-Animais"+
+                                        "11- Smart Home"+
+                                        "12- Animais"+
                                         "\n->");
                                 int catg5 =Read.mipInt();
                                 ArrayList<ClassProduto> p1=look.ConsultarProdutoCategoria(catg5);
@@ -187,23 +197,66 @@ public class Cliente implements InterfaceCliente, Serializable {
                                 for(int i=0; i<p1.size();i++){
                                     System.out.println(p1.get(i).toString());
                                 }
+                                p1.clear();
                                 break;
+
+                            case 4:
+                                ArrayList<ClassProduto> p2 = look.ConsultarProdutoPrecoCompraDesc();
+                                for(int i=0; i<p2.size();i++){
+                                    System.out.println(p2.get(i).toString());
+                                }
+                                p2.clear();
+                                break;
+
+                            case 5:
+                                ArrayList<ClassProduto> p3 = look.ConsultarProdutoPrecoCompraCresc();
+                                for(int i=0; i<p3.size();i++){
+                                    System.out.println(p3.get(i).toString());
+                                }
+                                p3.clear();
+                                break;
+
+                            case 6:
+                                ArrayList<ClassProduto> p4 = look.ConsultarProdutoPrecoVendaDesc();
+                                for(int i=0; i<p4.size();i++){
+                                    System.out.println(p4.get(i).toString());
+                                }
+                                p4.clear();
+                                break;
+
+                            case 7:
+                                ArrayList<ClassProduto> p5 = look.ConsultarProdutoPrecoVendaCresc();
+                                for(int i=0; i<p5.size();i++){
+                                    System.out.println(p5.get(i).toString());
+                                }
+                                p5.clear();
+                                break;
+
+                            case 8:
+                                System.out.println("Nome prod");
+                                String s8 = Read.mipString();
+                                ClassProduto p8 = look.ConsultarProduto(s8);
+                                System.out.println(p8.toString());
+                                break;
+
 
                             default:
                                 System.out.println("Numero invalido");
                                 break;
                         }
                         break;
+
+
 //--------------
                     case 6: //– Consultar as vendas (listar todas/ consultar por ordem de valor/produto mais vendido
 
                         System.out.println("Listar todas as vendas-->1");
-                        System.out.println("Consultar por preço venda ascendente-->2");
-                        System.out.println("Consultar por preço venda descendente-->3");
+                        System.out.println("Consultar por nome de produto-->2");
+                        System.out.println("Consultar por preço venda ascendente-->3");
+                        System.out.println("Consultar por preço venda descendente-->4");
+                        System.out.println("Consultar por produto mais vendido-->5");
+                        System.out.println("Consultar por categoria-->6");
 
-                        //Consultar vendas
-
-                        System.out.println("Consultar por produto mais vendido-->4");
 
                         int opcao6=Read.mipInt();
                         switch (opcao6){
@@ -216,6 +269,109 @@ public class Cliente implements InterfaceCliente, Serializable {
                                 break;
 
                             case 2:
+                                System.out.println("Nome prod");
+                                String s9 = Read.mipString();
+
+                                ArrayList<ClassOperacao> v1 =look.ConsultarVendasProduto(s9);
+                                for(int i=0; i<v1.size();i++){
+                                    System.out.println(v1.get(i).toString());
+                                }
+                                break;
+
+                            case 6:
+
+                                System.out.println("Insira a categoria a procurar:\n");
+                                System.out.println("1-Móveis "+
+                                        "2-Camas"+
+                                        "3-Sofás "+
+                                        "4-Exterior "+
+                                        "5-Escritório "+
+                                        "6-Decoração "+
+                                        "7-Texteis "+
+                                        "8-Electrodomésticos"+
+                                        "9-Cozinha "+
+                                        "10-Casa de banho "+
+                                        "11- Smart Home"+
+                                        "12- Animais"+
+                                        "\n->");
+                                int catg7 =Read.mipInt();
+                                ArrayList<ClassOperacao> v5 =look.ConsultarVendasCategoria(catg7);
+                                for(int i=0; i<v5.size();i++){
+                                    System.out.println(v5.get(i).toString());
+                                }
+                                break;
+
+                            default:
+                                System.out.println("Numero invalido");
+                                break;
+                        }
+
+                        break;
+//--------------
+                    case 7: //Consultar as compras feitas a um fornecedor (listar todas/ consultar por ordem de valor/
+
+
+                        System.out.println("Listar todas as compras-->1");
+                        System.out.println("Consultar por nome de produto-->2");
+                        System.out.println("Consultar por preço Compra ascendente-->3");
+                        System.out.println("Consultar por preço Compra descendente-->4");
+                        System.out.println("Consultar por fornecedor-->5");
+                        System.out.println("Consultar por categoria-->6");
+
+
+                        int opcao7=Read.mipInt();
+                        switch (opcao7) {
+
+                            case 1:
+                                ArrayList<ClassOperacao> cc = look.ListarCompras();
+                                for (int i = 0; i < cc.size(); i++) {
+                                    System.out.println(cc.get(i).toString());
+                                }
+                                break;
+
+                            case 2:
+                                System.out.println("Nome prod");
+                                String s10 = Read.mipString();
+
+                                ArrayList<ClassOperacao> v2 =look.ConsultarComprasProduto(s10);
+                                for(int i=0; i<v2.size();i++){
+                                    System.out.println(v2.get(i).toString());
+                                }
+                                break;
+
+                            case 5:
+                                System.out.println("Nome fornecedor");
+                                String s11 = Read.mipString();
+
+                                ArrayList<ClassOperacao> v3 =look.ConsultarComprasFornecedor(s11);
+                                for(int i=0; i<v3.size();i++){
+                                    System.out.println(v3.get(i).toString());
+                                }
+                                break;
+
+                            case 6:
+
+                                System.out.println("Insira a categoria a procurar:\n");
+                                System.out.println("1-Móveis "+
+                                        "2-Camas"+
+                                        "3-Sofás "+
+                                        "4-Exterior "+
+                                        "5-Escritório "+
+                                        "6-Decoração "+
+                                        "7-Texteis "+
+                                        "8-Electrodomésticos"+
+                                        "9-Cozinha "+
+                                        "10-Casa de banho "+
+                                        "11- Smart Home"+
+                                        "12- Animais"+
+                                        "\n->");
+                                int catg6 =Read.mipInt();
+                                ArrayList<ClassOperacao> v4 =look.ConsultarComprasCategoria(catg6);
+                                for(int i=0; i<v4.size();i++){
+                                    System.out.println(v4.get(i).toString());
+                                }
+                                break;
+
                             /*
                             *
                             *
@@ -235,49 +391,10 @@ public class Cliente implements InterfaceCliente, Serializable {
                         }
 
                         break;
-//--------------
-                    case 7: //Consultar as compras feitas a um fornecedor (listar todas/ consultar por ordem de valor/
 
-
-                        System.out.println("Listar todas as compras-->1");
-                        System.out.println("Consultar por preço venda ascendente-->2");
-                        System.out.println("Consultar por preço venda descendente-->3");
-                        System.out.println("Consultar por fornecedor-->4");
-
-                        int opcao7=Read.mipInt();
-                        switch (opcao7) {
-
-                            case 1:
-                                ArrayList<ClassOperacao> cc = look.ListarCompras();
-                                for (int i = 0; i < cc.size(); i++) {
-                                    System.out.println(cc.get(i).toString());
-                                }
-                                break;
-
-
-
-                                /*
-                                *
-                                *
-                                *
-                                *
-                                *
-                                *
-                                *
-                                *
-                                *
-                                *
-                                *
-                                * */
-
-
-//--------------
-                        }
-                        break;
                     case 8:
                         System.out.println("Hasta la vista baby");
                         return 0;
-
                     default:
                         System.out.println("Numero invalido");
                         break;

@@ -19,7 +19,7 @@ public class ClassProduto implements Serializable {
         private int id;
         private static int ultimo;
         private int categoria;
-        private String nome;
+        private String nome;//categoria+id
 
         private int stock; //quantidade em stock
         private int min_stock; //stock minimo -> fica 42 para todos, para já
