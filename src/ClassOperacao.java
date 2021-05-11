@@ -1,26 +1,15 @@
 import java.io.Serializable;
 import java.util.GregorianCalendar;
 
-/*Uma operação pode ser de entrada(compra)
-* ou se saída(venda)
- */
-
-//classe fechada! ? - criar parametro de influencia de stock
-    /* Fornecedor/Vendedor-efetuam operação->
-            Venda ou compra-> -stock / +stock
- */
 public class ClassOperacao implements Serializable {
 
     private GregorianCalendar data;
     private int nOperacao;          //nr do recido
     private static int ultimo;
 
-    //private ClassProduto produto;
     private int codigo; //código do produto
 
-    //preços estão nas classes OpCompra e OpVenda
-    //private int opStock; //stock a ser adicionado ou removido
-
+    //preços e stock estão nas classes OpCompra e OpVenda
 
     public ClassOperacao(ClassProduto produto, int dia, int mes, int ano){
         ultimo++;

@@ -5,12 +5,6 @@ import java.util.ArrayList;
 //      -> isto serve para o callback
 public interface InterfaceServidor extends java.rmi.Remote{
 
-    //registar produto
-    /*
-     *  fornecedor
-     *  stock comprado -> lançar erro quando o stock baixar para stock minimo
-     *  preço compra e venda
-     * */
     public void RegistarProduto(ClassProduto c) throws java.rmi.RemoteException;
     void RegistarCompra(ClassOperacao oc) throws RemoteException;
     void RegistarVenda(ClassOperacao op) throws RemoteException;
@@ -24,14 +18,13 @@ public interface InterfaceServidor extends java.rmi.Remote{
     //eliminar produto FORNECEDOR
     void EliminarProduto(String nome) throws RemoteException;
 
-    //------
     //consultar produto existente VENDEDOR
     //por categoria, preço, stock ...
     public ClassProduto ConsultarProduto(String s) throws java.rmi.RemoteException;
 
     ArrayList<ClassProduto> ConsultarProdutoCategoria(int s) throws RemoteException;
 
-    //? consultar saidas (vendas) VENDEDOR
+    //consultar saidas (vendas) VENDEDOR
     public ArrayList<ClassOperacao> ConsultarVendasProduto(String s) throws java.rmi.RemoteException;
     public ArrayList<ClassOperacao> ConsultarComprasProduto(String s) throws java.rmi.RemoteException;
     public ArrayList<ClassOperacao> ConsultarVendasCategoria(int s) throws RemoteException;
@@ -43,7 +36,7 @@ public interface InterfaceServidor extends java.rmi.Remote{
     public ArrayList<ClassProduto> ListarProdutos() throws RemoteException;
 
 
-        public ArrayList<ClassProduto> ConsultarProdutoPrecoVendaCresc() throws RemoteException;
+    public ArrayList<ClassProduto> ConsultarProdutoPrecoVendaCresc() throws RemoteException;
     public ArrayList<ClassProduto> ConsultarProdutoPrecoVendaDesc() throws RemoteException;
     public ArrayList<ClassProduto> ConsultarProdutoPrecoCompraDesc() throws RemoteException;
     public ArrayList<ClassProduto> ConsultarProdutoPrecoCompraCresc() throws RemoteException;

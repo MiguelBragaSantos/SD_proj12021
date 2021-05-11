@@ -5,17 +5,9 @@
 
 
 import java.io.*;
-import java.rmi.*;      //RemoteException, Naming
-import java.rmi.registry.Registry;
+import java.rmi.*;      //RemoteException, Naming, Registry
 import java.util.*;
 
-
-/*
-* fatal:
-* - public Servidor(ArrayList<ClassProduto> p) --> DEVIA TER AS 3 ARRAYLISTS/FILES
-* - no main: Servidor lserver=new Servidor(inicializarProd());  -> este inicializar devia inicializar os 3 e retornar 3
-
- * */
 
 public class Servidor extends java.rmi.server.UnicastRemoteObject implements InterfaceServidor, Runnable{
 
@@ -31,8 +23,6 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
         //this.Compras=c;
     }
 
-
-    //1º a executar
     private synchronized static ArrayList<ClassProduto> inicializarProd() throws ClassNotFoundException {
         ArrayList auxP=new ArrayList<ClassProduto>();
         ArrayList<ClassOperacao> auxV=new ArrayList<ClassOperacao>();
@@ -134,7 +124,6 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
             }
         }
     }
-
     @Override
     public synchronized void VenderProduto(String nomeProd, int dia, int mes, int ano, int sub_stock) throws RemoteException {
         //consultar se produto existe no registo - arraylist de Produtos
@@ -162,7 +151,6 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
             }
         }
     }
-
     @Override
     public void EliminarProduto(String nome) throws RemoteException {
         ArrayList<ClassProduto> arrayListClone = (ArrayList<ClassProduto>) Produtos.clone();
@@ -321,6 +309,25 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
         }
         return aux;
     }
+    @Override
+    public synchronized ArrayList<ClassOperacao> ConsultarVendasCategoria(int s) throws RemoteException {
+        ArrayList<ClassOperacao> aux = new ArrayList<ClassOperacao>(); //arraylist com todos os valores true
+        List<Integer> Ids = new ArrayList<>();
+        for (int j=0; j<Produtos.size(); j++){
+            ClassProduto aux_prod = Produtos.get(j);
+            if (aux_prod.getCategoria() == s)
+                Ids.add(aux_prod.getId());
+        }
+
+        for(int k=0; k<Ids.size();k++) {
+            for(int i=0;i<Vendas.size();i++){
+                ClassOperacao a = Vendas.get(i);
+                if(a.getCodigo() == Ids.get(k))
+                    aux.add(a);
+            }
+        }
+        return aux;
+    }
 
     @Override
     public synchronized ArrayList<ClassOperacao> ConsultarComprasFornecedor(String s) throws RemoteException {
@@ -361,27 +368,6 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
         return aux;
     }
     @Override
-    public synchronized ArrayList<ClassOperacao> ConsultarVendasCategoria(int s) throws RemoteException {
-        ArrayList<ClassOperacao> aux = new ArrayList<ClassOperacao>(); //arraylist com todos os valores true
-        List<Integer> Ids = new ArrayList<>();
-        for (int j=0; j<Produtos.size(); j++){
-            ClassProduto aux_prod = Produtos.get(j);
-            if (aux_prod.getCategoria() == s)
-                Ids.add(aux_prod.getId());
-        }
-
-        for(int k=0; k<Ids.size();k++) {
-            for(int i=0;i<Vendas.size();i++){
-                ClassOperacao a = Vendas.get(i);
-                if(a.getCodigo() == Ids.get(k))
-                    aux.add(a);
-            }
-        }
-        return aux;
-    }
-
-
-    @Override
     public synchronized ArrayList<ClassOperacao> ConsultarComprasProduto(String s) throws RemoteException {
         ArrayList<ClassOperacao> aux = new ArrayList<ClassOperacao>(); //arraylist com todos os valores true
         int id = 0;
@@ -399,6 +385,8 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
         return aux;
     }
 
+
+
     @Override
     public synchronized ArrayList<ClassOperacao> ListarVendas() throws RemoteException{
         return Vendas;
@@ -409,9 +397,6 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
     public synchronized ArrayList<ClassProduto> ListarProdutos() throws RemoteException{
         return Produtos;
     }
-
-
-
 
 
     //FUNÇOES AUXILIARES
@@ -465,35 +450,25 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
 
     public static void main(String[] argv) {
 
-        /* exception file
-        if (System.getSecurityManager() == null) {
-            System.setSecurityManager(new SecurityManager());
-        }*/
-
         try {
-            //Registry r =
             java.rmi.registry.LocateRegistry.createRegistry(1099);
-            System.out.println("mipRMI registry ready.");
+            System.out.println("RMI registry ready.");
         } catch (RemoteException e) {
-            System.out.println("mipException starting RMI registry:");
+            System.out.println("Exception starting RMI registry:");
             e.printStackTrace();
         }
         try{
-            //Servidor é onde está a Impl
             Servidor lserver=new Servidor(inicializarProd()); //1º a executar
 
             Naming.rebind("Prod",lserver);
 
-            System.out.println("mipServidor está OK");
+            System.out.println("Servidor está OK");
 
             Thread thread= new Thread(lserver);
             thread.start();
         } catch (Exception e) {
-            System.err.println("mipServer exception: " + e.getMessage());
+            System.err.println("Servidor excecao: " + e.getMessage());
         }
-
-        //fechar server e escrever nos files try{
-
     }
 
     @Override
@@ -507,8 +482,8 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
 
             Enumeration<String> enumeration = list.keys();
             ArrayList<ClassProduto> cloneProd =  (ArrayList<ClassProduto>) Produtos.clone();
-            ArrayList<ClassOperacao> cloneVendas = (ArrayList<ClassOperacao>) Vendas.clone();
-            ArrayList<ClassOperacao> cloneCompras = (ArrayList<ClassOperacao>) Compras.clone();
+            //ArrayList<ClassOperacao> cloneVendas = (ArrayList<ClassOperacao>) Vendas.clone();
+            //ArrayList<ClassOperacao> cloneCompras = (ArrayList<ClassOperacao>) Compras.clone();
 
             while(enumeration.hasMoreElements()) {
                 String key = enumeration.nextElement();

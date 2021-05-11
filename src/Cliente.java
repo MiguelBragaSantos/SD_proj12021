@@ -37,17 +37,13 @@ public class Cliente extends java.rmi.server.UnicastRemoteObject implements Inte
 
         System.out.println((InterfaceCliente)this);
 
-        /*if (System.getSecurityManager() == null) {
-            System.setSecurityManager(new SecurityManager());
-        }*/
 
         String url = "rmi://" +
                 //InetAddress.getLocalHost().getHostAddress()
 
-                //InetAddress.getByName("192.168.1.65").getHostAddress() //ip Miguel
+                InetAddress.getByName("192.168.1.65").getHostAddress() //ip Miguel
                 //InetAddress.getByName("192.168.1.77").getHostAddress() //ip Inês
-                InetAddress.getByName("192.168.1.78").getHostAddress() //ip Carlos
-
+                //InetAddress.getByName("192.168.1.78").getHostAddress() //ip Carlos
 
                 + ":1099/Prod"; // isto serve para ir buscar o nome do servidor + label usada para o Registry (inicializarProd - servidor)
 
@@ -55,11 +51,12 @@ public class Cliente extends java.rmi.server.UnicastRemoteObject implements Inte
             look = (InterfaceServidor) Naming.lookup(url);
 
             int option;
-            int x = 0;      //gerar loop
+            int x = 0;
 
             while( x==0 ){
                 do {
-                    System.out.println("\n\n----Mobiliário----");
+                    System.out.println("\n\n-------G14-------");
+                    System.out.println("----Mobiliário----");
                     System.out.println("1- Registar um produto -->");
                     System.out.println("2- Efetuar compra -->"); //Adicionar uma certa quantidade
                     System.out.println("3- Vender um produto -->"); //Dar saída/venda
@@ -269,10 +266,7 @@ public class Cliente extends java.rmi.server.UnicastRemoteObject implements Inte
                     case 6: //– Consultar as vendas
                         System.out.println("Listar todas as vendas-->1");
                         System.out.println("Consultar por nome de produto-->2");
-                        System.out.println("Consultar por preço venda ascendente-->3");
-                        System.out.println("Consultar por preço venda descendente-->4");
-                        System.out.println("Consultar por produto mais vendido-->5");
-                        System.out.println("Consultar por categoria-->6");
+                        System.out.println("Consultar por categoria-->3");
 
 
                         int opcao6=Read.mipInt();
@@ -295,7 +289,7 @@ public class Cliente extends java.rmi.server.UnicastRemoteObject implements Inte
                                 }
                                 break;
 
-                            case 6:
+                            case 3:
                                 System.out.println("Insira a categoria a procurar:\n");
                                 System.out.println("1-Móveis "+
                                         "2-Camas"+
@@ -327,8 +321,6 @@ public class Cliente extends java.rmi.server.UnicastRemoteObject implements Inte
                     case 7: //Consultar as compras feitas
                         System.out.println("Listar todas as compras-->1");
                         System.out.println("Consultar por nome de produto-->2");
-                        //System.out.println("Consultar por preço Compra ascendente-->3");
-                        //System.out.println("Consultar por preço Compra descendente-->4");
                         System.out.println("Consultar por fornecedor-->3");
                         System.out.println("Consultar por categoria-->4");
 
@@ -397,7 +389,6 @@ public class Cliente extends java.rmi.server.UnicastRemoteObject implements Inte
 
                     case 8:
                         System.out.println("---");
-                        //escrever nos files!
                         return 0;
                     default:
                         System.out.println("Numero invalido");

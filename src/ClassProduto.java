@@ -1,25 +1,25 @@
 import java.io.Serializable;
-/*
-*        O QUE FALTA:
-* - definir função para o preço de venda
-*       tipo IVA, comissão, etc
-*
-* - associar categoria a um range de 1000 números
-*       id mudar o primeiro valor consoante a categoria
-*               se for sofás: 1xxx
-*               se for camas: 2xxx
-*
-*
-* */
 
 
 public class ClassProduto implements Serializable {
 
-
         private int id;
         private static int ultimo;
         private int categoria;
-        private String nome;//categoria+id
+                        /*"1-Móveis "+
+                          "2-Camas"+
+                          "3-Sofás "+
+                          "4-Exterior "+
+                          "5-Escritório "+
+                          "6-Decoração "+
+                          "7-Texteis "+
+                          "8-Electrodomésticos"+
+                          "9-Cozinha "+
+                          "10-Casa de banho "+
+                          "11- Smart Home"+
+                          "12- Animais"
+                        */
+        private String nome; //categoria+id
 
         private int stock; //quantidade em stock
         private int min_stock; //stock minimo -> fica 42 para todos, para já
@@ -49,20 +49,6 @@ public class ClassProduto implements Serializable {
                 id=ultimo;
 
                 this.nome=nome;
-
-                /*"1-Móveis "+
-                        "2-Camas"+
-                        "3-Sofás "+
-                        "4-Exterior "+
-                        "5-Escritório "+
-                        "6-Decoração "+
-                        "7-Texteis "+
-                        "8-Electrodomésticos"+
-                        "9-Cozinha "+
-                        "10-Casa de banho "+
-                        "11- Smart Home"+
-                        "12- Animais"
-                                */
 
                 this.categoria=categoria;
 
@@ -135,9 +121,9 @@ public class ClassProduto implements Serializable {
                 return preco_venda;
         }
 
-        /*? assim ou simples? public void setPreco_venda(float preco_compra) {
+        public void setPreco_venda(float preco_compra) {
                 preco_venda= (float) (preco_compra + preco_compra*0.23 + 0.01);
-        }*/
+        }
 
         public String getFornecedor() {
                 return fornecedor;
