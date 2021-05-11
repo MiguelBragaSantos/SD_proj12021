@@ -464,7 +464,12 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
 
 
     public static void main(String[] argv) {
-        //Iniciar a execução do registry no porto 1099
+
+        /* exception file
+        if (System.getSecurityManager() == null) {
+            System.setSecurityManager(new SecurityManager());
+        }*/
+
         try {
             //Registry r =
             java.rmi.registry.LocateRegistry.createRegistry(1099);
@@ -487,20 +492,15 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
             System.err.println("mipServer exception: " + e.getMessage());
         }
 
-        //fechar serrver e escrever nos files
-        /*try{
-
-        }*/
-
+        //fechar server e escrever nos files try{
 
     }
-
 
     @Override
     public void run() {
         while(true){
             try {
-                Thread.sleep(10 * 1000);
+                Thread.sleep(10 );
             } catch (InterruptedException ex) {
                 System.out.println(ex.getMessage());
             }
