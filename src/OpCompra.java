@@ -15,7 +15,7 @@ public class OpCompra extends ClassOperacao implements Serializable {
         return tot_preco;
     }
 
-    public int getOutStock(){
+    public int getInStock(){
         return inStock;
     }
     public void setInStock(int inStock){
@@ -23,7 +23,8 @@ public class OpCompra extends ClassOperacao implements Serializable {
     }
 
     public String toString() {
-        String s = super.toString();
+        int a = getInStock();
+        String s = super.toString(a);
         return s;
     }
 

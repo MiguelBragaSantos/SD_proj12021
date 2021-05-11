@@ -56,9 +56,9 @@ public class ClassOperacao implements Serializable {
     }
 
 
-    public String toString(){
-        String s = "DIA OPERACAO: "+ (data.getTime().getDate()) + "/" + (data.getTime().getMonth()+1) + "/" + (data.getTime().getYear()+1900) + " " ;
-        s=s+ "\nN.OPERACAO "+ nOperacao + "\nOPERAÇÃO RELATIVA AO PRODUTO COM O CODIGO " + codigo + "\nQUANTIDADE COMPRADA/VENDIDA";
+    public String toString(int st){
+        String s = "\n\nDATA OPERACAO: "+ (data.getTime().getDate()) + "/" + (data.getTime().getMonth()) + "/" + (data.getTime().getYear()+1900) + " " ;
+        s=s+ "\nN.OPERACAO "+ nOperacao + "\nOPERAÇÃO RELATIVA AO PRODUTO COM O CODIGO " + codigo + "\nQUANTIDADE COMPRADA/VENDIDA = " + st;
         return s;
     }
 }

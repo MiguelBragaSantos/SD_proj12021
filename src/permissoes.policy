@@ -2,5 +2,4 @@ grant {
  // allows anyone to listen on un-privileged ports
  permission java.net.SocketPermission "*:1024-65535", "listen,accept,connect";
  permission java.io.FilePermission "D:\MIP\EI\1SD\1Praticas\G14_Mobiliario\SD_proj12021\src\-", "write,read";
-    //tentar com barras ao contrario
 };

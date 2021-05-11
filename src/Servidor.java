@@ -9,6 +9,7 @@ import java.rmi.*;      //RemoteException, Naming
 import java.rmi.registry.Registry;
 import java.util.*;
 
+
 /*
 * fatal:
 * - public Servidor(ArrayList<ClassProduto> p) --> DEVIA TER AS 3 ARRAYLISTS/FILES
@@ -33,7 +34,7 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
 
     //1º a executar
     private synchronized static ArrayList<ClassProduto> inicializarProd() throws ClassNotFoundException {
-        ArrayList<ClassProduto> auxP=new ArrayList<ClassProduto>();
+        ArrayList auxP=new ArrayList<ClassProduto>();
         ArrayList<ClassOperacao> auxV=new ArrayList<ClassOperacao>();
         ArrayList<ClassOperacao> auxC = new ArrayList<ClassOperacao>();
 
@@ -41,8 +42,7 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
             // * para tratar a excecao
             FileOutputStream fos = new FileOutputStream("Produtos_registados.txt");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(fos);
-            fos.flush();
+            //oos.writeObject(new ClassProduto("Dummy",2,3,"Dummy",5));
             oos.flush();
             oos.close();
             fos.close();
@@ -50,9 +50,13 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
 
             FileInputStream fisP = new FileInputStream("Produtos_registados.txt");
             ObjectInputStream oisP = new ObjectInputStream(fisP);
-            auxP = (ArrayList) oisP.readObject();
-
-            oisP.close();
+            try {
+                while (true) {
+                    auxP.add(oisP.readObject());
+                }
+            } catch(EOFException e) {
+                oisP.close();
+            }
             fisP.close();
         }
         catch (IOException e) {
@@ -160,13 +164,14 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
     }
 
     @Override
-    public void EliminarProduto(String nome, int id) throws RemoteException {
+    public void EliminarProduto(String nome) throws RemoteException {
         ArrayList<ClassProduto> arrayListClone = (ArrayList<ClassProduto>) Produtos.clone();
 
         for (int i = 0; i < arrayListClone.size(); i++){
             ClassProduto a = arrayListClone.get(i);
-            if( a.getNome().equals(nome) || a.getId()==id){
-                arrayListClone.remove(id);
+            if( a.getNome().equals(nome) ){
+                arrayListClone.remove(i);
+                System.out.println("Produto removido!");
                 Produtos= (ArrayList<ClassProduto>) arrayListClone.clone();
                 try {
                     EscreverFileProd(Produtos);
@@ -183,12 +188,15 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
     @Override
     public ClassProduto ConsultarProduto(String s) throws RemoteException {
         ClassProduto a = new ClassProduto();
+        ClassProduto b = new ClassProduto();
+
         for(int i=0;i<Produtos.size();i++){
             a = Produtos.get(i);
             if(a.getNome().equals(s))
-                break;
+                return a; //break;
         }
-        return a;
+
+        return b;
     }
 
     public synchronized ArrayList<ClassProduto> ConsultarProdutoStockDesc() throws RemoteException {
@@ -206,7 +214,6 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
         });
         return aux;
     }
-
     public synchronized ArrayList<ClassProduto> ConsultarProdutoStockCresc() throws RemoteException {
         ArrayList<ClassProduto> aux = Produtos; //arraylist com todos os valores true
 
@@ -222,6 +229,7 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
         });
         return aux;
     }
+
     public synchronized ArrayList<ClassProduto> ConsultarProdutoPrecoCompraDesc() throws RemoteException {
         ArrayList<ClassProduto> aux = Produtos; //arraylist com todos os valores true
 
@@ -237,7 +245,6 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
         });
         return aux;
     }
-
     public synchronized ArrayList<ClassProduto> ConsultarProdutoPrecoCompraCresc() throws RemoteException {
         ArrayList<ClassProduto> aux = Produtos; //arraylist com todos os valores true
 
@@ -269,7 +276,6 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
         });
         return aux;
     }
-
     public synchronized ArrayList<ClassProduto> ConsultarProdutoPrecoVendaCresc() throws RemoteException {
         ArrayList<ClassProduto> aux = Produtos; //arraylist com todos os valores true
 
@@ -400,9 +406,9 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
     public synchronized ArrayList<ClassOperacao> ListarCompras() throws RemoteException{
         return Compras;
     }
-
-
-
+    public synchronized ArrayList<ClassProduto> ListarProdutos() throws RemoteException{
+        return Produtos;
+    }
 
 
 
@@ -475,12 +481,18 @@ public class Servidor extends java.rmi.server.UnicastRemoteObject implements Int
 
             System.out.println("mipServidor está OK");
 
-
             Thread thread= new Thread(lserver);
             thread.start();
         } catch (Exception e) {
             System.err.println("mipServer exception: " + e.getMessage());
         }
+
+        //fechar serrver e escrever nos files
+        /*try{
+
+        }*/
+
+
     }
 
 

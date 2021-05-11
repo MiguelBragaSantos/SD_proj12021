@@ -26,7 +26,8 @@ public class OpVenda extends ClassOperacao implements Serializable {
     }
 
     public String toString() {
-        String s= super.toString() + "\nPRECO "+ tot_preco +"\n";
+        int a = getOutStock();
+        String s= super.toString(a);
         return s;
     }
 

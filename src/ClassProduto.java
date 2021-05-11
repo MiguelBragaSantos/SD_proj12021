@@ -47,7 +47,23 @@ public class ClassProduto implements Serializable {
         public ClassProduto(String nome, int categoria, int min_stock, String fornecedor, float preco_compra){
                 ultimo++;
                 id=ultimo;
+
                 this.nome=nome;
+
+                /*"1-Móveis "+
+                        "2-Camas"+
+                        "3-Sofás "+
+                        "4-Exterior "+
+                        "5-Escritório "+
+                        "6-Decoração "+
+                        "7-Texteis "+
+                        "8-Electrodomésticos"+
+                        "9-Cozinha "+
+                        "10-Casa de banho "+
+                        "11- Smart Home"+
+                        "12- Animais"
+                                */
+
                 this.categoria=categoria;
 
                 stock = 0;
@@ -134,7 +150,7 @@ public class ClassProduto implements Serializable {
 
         //toString
         public String toString() {
-                String s = "ID: " + id + "\nNOME: " + nome + "\nCATEGORIA: " + categoria + "\nSTOCK: " + stock + "\nFORNECEDOR: " + fornecedor;
+                String s = "\nID: " + id + "\nNOME: " + nome + "\nCATEGORIA: " + categoria + "\nSTOCK: " + stock + "\nFORNECEDOR: " + fornecedor;
                 return s;
         }
 

@@ -47,14 +47,14 @@ public class Cliente extends java.rmi.server.UnicastRemoteObject implements Inte
 
             while( x==0 ){
                 do {
-                    System.out.println("----Mobiliário----");
+                    System.out.println("\n\n----Mobiliário----");
                     System.out.println("1- Registar um produto -->");
-                    System.out.println("2- Efetuar compra | Adicionar uma certa quantidade -->");
-                    System.out.println("3- Vender | Dar saída/venda de um produto -->");
+                    System.out.println("2- Efetuar compra -->"); //Adicionar uma certa quantidade
+                    System.out.println("3- Vender um produto -->"); //Dar saída/venda
                     System.out.println("4- Eliminar um produto-->");
                     System.out.println("5- Consultar produtos existentes-->");
-                    System.out.println("6- Consultar as vendas (listar todas/ consultar por ordem de valor/produto mais vendido ...-->");
-                    System.out.println("7- Consultar as compras feitas a um fornecedor (listar todas/ consultar por ordem de valor -->");
+                    System.out.println("6- Consultar as vendas -->");
+                    System.out.println("7- Consultar as compras feitas a um fornecedor -->");
                     System.out.println("8 -Sair-->");
 
                     option = Read.mipInt();
@@ -74,7 +74,7 @@ public class Cliente extends java.rmi.server.UnicastRemoteObject implements Inte
 
                         System.out.println("Categoria:\n " +
                                 "1-Móveis "+
-                                "2-Camas"+
+                                "2-Camas "+
                                 "3-Sofás "+
                                 "4-Exterior "+
                                 "5-Escritório "+
@@ -137,10 +137,8 @@ public class Cliente extends java.rmi.server.UnicastRemoteObject implements Inte
                     case 4: //Eliminar um produto (caso deixe de existir no negócio);
                         System.out.println("Nome da mobília a eliminar:");
                         String nome4=Read.mipString();
-                        System.out.println("ID da mobília a eliminar:");
-                        int id4 =Read.mipInt();
 
-                        look.EliminarProduto(nome4, id4);
+                        look.EliminarProduto(nome4);
                         break;
 //--------------
                     case 5: //Consultar produtos existentes. Prever vários tipos de consultas;
@@ -152,6 +150,7 @@ public class Cliente extends java.rmi.server.UnicastRemoteObject implements Inte
                         System.out.println("Consultar por preço venda descendente-->6");
                         System.out.println("Consultar por preço venda ascendente-->7");
                         System.out.println("Consultar por nome-->8");
+                        System.out.println("Listar todos -->9");
 
                         int opcao5=Read.mipInt();
                         switch (opcao5){
@@ -239,6 +238,13 @@ public class Cliente extends java.rmi.server.UnicastRemoteObject implements Inte
                                 System.out.println(p8.toString());
                                 break;
 
+                            case 9:
+                                ArrayList<ClassProduto> p9 = look.ListarProdutos();
+                                for(int i=0; i<p9.size();i++){
+                                    System.out.println(p9.get(i).toString());
+                                }
+                                break;
+
 
                             default:
                                 System.out.println("Numero invalido");
@@ -248,7 +254,7 @@ public class Cliente extends java.rmi.server.UnicastRemoteObject implements Inte
 
 
 //--------------
-                    case 6: //– Consultar as vendas (listar todas/ consultar por ordem de valor/produto mais vendido
+                    case 6: //– Consultar as vendas
 
                         System.out.println("Listar todas as vendas-->1");
                         System.out.println("Consultar por nome de produto-->2");
@@ -393,7 +399,7 @@ public class Cliente extends java.rmi.server.UnicastRemoteObject implements Inte
                         break;
 
                     case 8:
-                        System.out.println("Hasta la vista baby");
+                        System.out.println("---");
                         return 0;
                     default:
                         System.out.println("Numero invalido");
@@ -401,6 +407,6 @@ public class Cliente extends java.rmi.server.UnicastRemoteObject implements Inte
                 }
             } } catch(Exception r){
             System.out.println("Exception in client "+r.getMessage()); }
-    return 1;
+        return 1;
     }//run
 }

@@ -22,7 +22,7 @@ public interface InterfaceServidor extends java.rmi.Remote{
     void VenderProduto(String nomeProd, int dia, int mes, int ano, int sub_stock) throws RemoteException;
 
     //eliminar produto FORNECEDOR
-    void EliminarProduto(String nome, int id) throws RemoteException;
+    void EliminarProduto(String nome) throws RemoteException;
 
     //------
     //consultar produto existente VENDEDOR
@@ -40,8 +40,10 @@ public interface InterfaceServidor extends java.rmi.Remote{
 
     public ArrayList<ClassOperacao> ListarVendas() throws RemoteException;
     public ArrayList<ClassOperacao> ListarCompras() throws RemoteException;
+    public ArrayList<ClassProduto> ListarProdutos() throws RemoteException;
 
-    public ArrayList<ClassProduto> ConsultarProdutoPrecoVendaCresc() throws RemoteException;
+
+        public ArrayList<ClassProduto> ConsultarProdutoPrecoVendaCresc() throws RemoteException;
     public ArrayList<ClassProduto> ConsultarProdutoPrecoVendaDesc() throws RemoteException;
     public ArrayList<ClassProduto> ConsultarProdutoPrecoCompraDesc() throws RemoteException;
     public ArrayList<ClassProduto> ConsultarProdutoPrecoCompraCresc() throws RemoteException;
